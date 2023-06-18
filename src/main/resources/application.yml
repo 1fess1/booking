@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: booking-app
+  jpa:
+    generate-ddl: false
+    database: postgresql
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://postgresqldb:5432/booking
+    password: test
+    username: test
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.xml
+
+logging:
+  level:
+    root: DEBUG
+    com:
+      booking: TRACE
+
+
