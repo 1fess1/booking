@@ -29,7 +29,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public List<BookingDto> getBookings(LocalDate date){
-        log.info("Try collect bookings for date " + date);
+        log.trace("Try collect bookings for date " + date);
         List<BookingDto> bookingDtos = bookingRepository.getAllByActiveTrueAndDate(date).stream()
                 .map(mapper::toDto).toList();
         log.info("Collected " + bookingDtos.size() + " bookings");
@@ -38,6 +38,9 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public BookingDto save(BookingCreateRequest request){
-      return mapper.toDto(bookingRepository.save(bookingFactory.toBooking(request)));
+        log.trace("Try save booking");
+        BookingDto bookingDto = mapper.toDto(bookingRepository.save(bookingFactory.toBooking(request)));
+        log.info("Booking saved for date: " + bookingDto.getDate());
+        return bookingDto;
     }
 }

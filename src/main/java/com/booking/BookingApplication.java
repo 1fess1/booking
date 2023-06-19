@@ -55,8 +55,16 @@ public class BookingApplication {
 
 	private static void startServer() {
 		MuServer server = MuServerBuilder.httpServer()
-				.addHandler(new RequestLoggingHandler())
-				.withHttp2Config(Http2ConfigBuilder.http2EnabledIfAvailable())
+				.addHandler(Method.GET, "/booking/create", (request, response, pathParams) -> {
+					BookingDto save = bookingService.save(BookingCreateRequest.builder()
+							.customerName(pathParams.get("customerName"))
+							.tableSize(TableSize.valueOf(pathParams.get("tableSize")))
+							.date(LocalDate.parse(pathParams.get("date")))
+							.from(LocalTime.parse(pathParams.get("from")))
+							.build());
+					response.write(new Gson().toJson(save));
+					response.contentType("application/json");
+				})
 				.addHandler(Method.GET, "/bookings", (request, response, pathParams) -> {
 					String date = pathParams.get("date");
 					LocalDate parse = LocalDate.parse(date);
@@ -76,13 +84,6 @@ public class BookingApplication {
 				})
 				.start();
 
-	}
-
-	private static class RequestLoggingHandler implements MuHandler {
-		public boolean handle(MuRequest request, MuResponse response) {
-			log.info(request.method() + " " + request.uri());
-			return false;
-		}
 	}
 
 }

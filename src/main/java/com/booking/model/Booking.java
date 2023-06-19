@@ -45,13 +45,4 @@ public class Booking implements Serializable {
     private LocalTime to;
 
     private Boolean active;
-
-    public JSONObject toJSON() {
-        return new JSONObject()
-                .put("customerName", customerName)
-                .put("tableSize", tableSize)
-                .put("date", date)
-                .put("from", from)
-                .put("to", to);
-    }
 }
