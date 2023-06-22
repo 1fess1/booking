@@ -1,8 +1,7 @@
 package com.booking.controller;
 
-import com.booking.dto.BookingCreateRequest;
+import com.booking.common.Mapper;
 import com.booking.dto.BookingDto;
-import com.booking.dto.TableSize;
 import com.booking.service.BookingService;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +15,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 
 @Slf4j
@@ -25,8 +23,14 @@ public class BookingController {
 
     private final BookingService bookingService;
 
-    public BookingController(BookingService bookingService) {
+    private final Mapper mapper;
+
+    private final Gson getGson;
+
+    public BookingController(BookingService bookingService, Mapper mapper, Gson getGson) {
         this.bookingService = bookingService;
+        this.mapper = mapper;
+        this.getGson = getGson;
     }
 
     @GET
@@ -37,8 +41,7 @@ public class BookingController {
 					LocalDate localDate = LocalDate.parse(date);
         List<BookingDto> bookings = bookingService.getBookings(localDate);
         log.debug("Booking size " + bookings.size());
-        Gson gson = new Gson();
-        return gson.toJson(bookings);
+        return getGson.toJson(bookings);
     }
 
     @POST
@@ -49,13 +52,7 @@ public class BookingController {
                                     @FormParam("tableSize") String tableSize,
                                     @FormParam("date") String date,
                                     @FormParam("from") String from) {
-        BookingDto bookingDto = bookingService.saveBooking(BookingCreateRequest.builder()
-                .customerName(name)
-                .tableSize(TableSize.valueOf(tableSize))
-                .date(LocalDate.parse(date))
-                .from(LocalTime.parse(from))
-                .build());
-        Gson gson = new Gson();
-        return gson.toJson(bookingDto);
+
+        return getGson.toJson(bookingService.saveBooking(mapper.toBookingCreateRequest(name, tableSize, date, from)));
     }
 }

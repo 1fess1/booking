@@ -18,7 +18,6 @@ import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import org.json.JSONObject;
 
 @Getter
 @Setter
