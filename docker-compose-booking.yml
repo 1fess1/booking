@@ -22,7 +22,7 @@ services:
   booking:
     depends_on:
       - postgresqldb
-    image: "booking:0.5.19-SNAPSHOT"
+    image: "booking:0.5.20-SNAPSHOT"
     restart: always
     container_name: booking
     ports:

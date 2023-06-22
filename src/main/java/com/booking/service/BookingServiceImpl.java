@@ -37,7 +37,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public BookingDto save(BookingCreateRequest request){
+    public BookingDto saveBooking(BookingCreateRequest request){
         log.trace("Try save booking");
         BookingDto bookingDto = mapper.toDto(bookingRepository.save(bookingFactory.toBooking(request)));
         log.info("Booking saved for date: " + bookingDto.getDate());

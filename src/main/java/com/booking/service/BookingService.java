@@ -10,5 +10,5 @@ public interface BookingService {
 
     List<BookingDto> getBookings(LocalDate date);
 
-    BookingDto save(BookingCreateRequest request);
+    BookingDto saveBooking(BookingCreateRequest request);
 }
